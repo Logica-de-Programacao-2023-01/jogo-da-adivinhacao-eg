@@ -1,0 +1,52 @@
+package main
+
+import "fmt"
+import "math/rand"
+import "time"
+
+func main() {
+    jogarNovamente := true
+    var todasTentativas [][]int
+
+    for jogarNovamente {
+        resposta := gerarNumeroAleatorio()
+        tentativas := []int{}
+        fmt.Println("Bem-vindo ao jogo da adivinhação!")
+        fmt.Println("Digite um número entre 1 e 100.")
+
+        for {
+            fmt.Print("Digite sua tentativa: ")
+            var palpite int
+            fmt.Scanln(&palpite)
+
+            tentativas = append(tentativas, palpite)
+
+            if palpite == resposta {
+                fmt.Println("Acertooooou!!")
+                break
+            } else if palpite > resposta {
+                fmt.Println("Tente um número menor.")
+            } else {
+                fmt.Println("Tente um número maior.")
+            }
+        }
+
+        todasTentativas = append(todasTentativas, tentativas)
+        fmt.Printf("Você tentou %d vezes antes de acertar.\n", len(tentativas))
+
+        fmt.Print("Deseja jogar novamente? (s/n): ")
+        var jogarNovamenteInput string
+        fmt.Scanln(&jogarNovamenteInput)
+        jogarNovamente = (jogarNovamenteInput == "s" || jogarNovamenteInput == "S")
+    }
+
+    fmt.Println("Histórico de tentativas:")
+    for i, tentativas := range todasTentativas {
+        fmt.Printf("Jogada %d: %v\n", i+1, tentativas)
+    }
+}
+
+func gerarNumeroAleatorio() int {
+    rand.Seed(time.Now().UnixNano())
+    return rand.Intn(100) + 1
+}
